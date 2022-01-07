@@ -10,8 +10,6 @@ function create(req, res) {
         console.log(message.split("+").join(" "));
       });
     }
-
-    console.log("we")
   
     res.statusCode = 302;
     res.setHeader("Location", "/");
