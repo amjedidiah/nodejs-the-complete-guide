@@ -1,14 +1,13 @@
-module.exports = (req, res) => {
-  const HTML = `<html>
-<head><title>Home</title></head>
-<body>
-    <h1>Welcome home</h1>
-    <form method="POST" action="/create-user">
-        <input type="text" name="username" />
-        <button>Submit</button>
-    </form>
-</body>
-<html>`;
+// Module imports
+const path = require("path");
+const express = require("express");
+const router = new express.Router();
 
-  res.send(HTML);
-};
+// Util imports
+const rootDir = require("../util/path.util")
+
+router.use("/", (req, res) =>
+  res.sendFile(path.join(rootDir, "views", "home.html"))
+);
+
+module.exports = router;

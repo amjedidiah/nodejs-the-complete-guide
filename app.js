@@ -1,24 +1,23 @@
 // Module imports
-const express = require("express"); // ! Task 1
-const homeRoute = require("./routes/home.route");
-const usersRoute = require("./routes/users.route");
+const bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path")
+
+// Route imports
+const routes = require("./routes")
+
+// Util imports
+const rootDIR = require("./util/path.util")
 
 // App
 const app = express();
 
-// app.use((req, res, next) => {
-//   console.log("Middleware 1");
-//   next();
-// });
+// Middleware
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(rootDIR, "public")))
 
-// app.use((req, res, next) => {
-//   console.log("Middleware 2");
-//   res.send("<h1>Hello world</h1>");
-//   next();
-// });
+// Routes definition
+app.use(routes)
 
-app.use("/users", usersRoute.list)
-app.use("/create-user", usersRoute.create)
-app.use("/", homeRoute)
-
+// Set listen PORT
 app.listen(3000, () => console.log(`Server active on port: 3000`));
