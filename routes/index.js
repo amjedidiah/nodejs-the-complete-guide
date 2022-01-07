@@ -8,9 +8,9 @@ const rootDir = require("../util/path.util");
 
 // Routes
 router.use("/users", require("./users.route"));
-router.use(require("./home.route"));
-router.use((req, res) =>
-  res.status(404).sendFile(path.join(rootDir, "views", "users.html"))
+router.get("/", require("./home.route"));
+router.use("/", (req, res) =>
+  res.status(404).sendFile(path.join(rootDir, "views", "404.html"))
 );
 
 module.exports = router;
