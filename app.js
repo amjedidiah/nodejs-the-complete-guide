@@ -1,11 +1,30 @@
 // Module imports
-const http = require("http");
-const routes = require("./routes");
+const express = require("express"); // ! Task 1
+const homeRoute = require("./routes/home.route");
+const usersRoute = require("./routes/users.route");
 
-// Server from HTTP module
-const server = http.createServer(routes);
+// App
+const app = express();
 
-// ! Task 1: Spin a Node.js-driven server on Port 3000
-server.listen(3000, null, null, () =>
-  console.log(`Server active on port: 3000`)
-);
+app.use("/", (req, res, next) => {
+  console.log("Middleware 1");
+  next();
+});
+
+app.use("/", (req, res, next) => {
+  console.log("Middleware 2");
+  // res.send("<h1>Hello world</h1>");
+  next();
+});
+
+app.use("/", (req, res, next) => {
+  homeRoute(req, res);
+  next();
+})
+app.use("/users", (req, res, next) => {
+  usersRoute.list(req, res);
+  next();
+})
+app.use("/create-user", usersRoute.create)
+
+app.listen(3000, () => console.log(`Server active on port: 3000`));

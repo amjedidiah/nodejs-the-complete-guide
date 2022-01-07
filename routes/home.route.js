@@ -1,5 +1,4 @@
 module.exports = (req, res) => {
-    // ! Task 3
   const HTML = `<html>
 <head><title>Home</title></head>
 <body>
@@ -11,5 +10,5 @@ module.exports = (req, res) => {
 </body>
 <html>`;
 
-  res.write(HTML);
+  res.send(HTML);
 };

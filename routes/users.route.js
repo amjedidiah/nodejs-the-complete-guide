@@ -1,4 +1,3 @@
-// ! Task 4
 function create(req, res) {
     if (req.method === "POST") {
       const body = [];
@@ -11,6 +10,8 @@ function create(req, res) {
         console.log(message.split("+").join(" "));
       });
     }
+
+    console.log("we")
   
     res.statusCode = 302;
     res.setHeader("Location", "/");
@@ -30,7 +31,7 @@ function create(req, res) {
     </body>
     <html>`;
   
-    res.write(HTML);
+    res.send(HTML);
   }
   
   module.exports = {
