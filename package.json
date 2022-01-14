@@ -20,7 +20,8 @@
   "homepage": "https://github.com/amjedidiah/nodejs-the-complete-guide#readme",
   "dependencies": {
     "body-parser": "^1.19.1",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

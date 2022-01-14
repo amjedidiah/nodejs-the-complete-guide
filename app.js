@@ -12,6 +12,10 @@ const rootDIR = require("./util/path.util");
 // App
 const app = express();
 
+// Template Engine
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDIR, "public")));

@@ -1,16 +1,12 @@
 // Module imports
-const path = require("path");
 const express = require("express");
 const router = new express.Router();
 
-// Util imports
-const rootDir = require("../util/path.util");
-
 // Routes
-router.use("/users", require("./users.route"));
+router.use("/users", require("./users.route").routes);
 router.get("/", require("./home.route"));
 router.use("/", (req, res) =>
-  res.status(404).sendFile(path.join(rootDir, "views", "404.html"))
+  res.status(404).render("404", { docTitle: "Not Found", path: "/404" })
 );
 
 module.exports = router;

@@ -1,3 +1,100 @@
+/* Template Styles */
 * {
-  background-color: #d0d0d0;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 87.5%;
+}
+
+/* Colors */
+:root {
+  --black: #000000;
+  --gray: #d0d0d0;
+  --purple: #561d5e;
+  --white: #ffffff;
+}
+
+/* General Styles */
+a {
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1015px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+#header {
+  background-color: var(--white);
+  box-shadow: 1px 1px 1px 1px var(--gray);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.nav {
+  display: flex;
+}
+
+.nav-item {
+  list-style: none;
+  margin: 10px 15px 10px 0;
+}
+
+.nav-link {
+  color: var(--black);
+  text-transform: uppercase;
+  padding-right: 10px;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: var(--purple);
+}
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+main {
+  padding: 20px 0;
+}
+
+.header__home {
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+.header__home h1 {
+  margin-bottom: 5px;
+}
+
+input,
+input:hover,
+input:focus,
+button {
+  padding: 7px 10px;
+  height: fit-content;
+  border: 1px solid var(--purple);
+}
+
+input,
+input:hover,
+input:focus {
+  box-shadow: inset 0 0 0 100px var(--white);
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+}
+
+button {
+  background: var(--purple);
+  color: var(--white);
+  border-radius: 0 5px 5px 0;
 }

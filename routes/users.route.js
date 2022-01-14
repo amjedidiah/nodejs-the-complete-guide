@@ -1,18 +1,20 @@
 // Module imports
-const path = require("path");
 const express = require("express");
 const router = new express.Router();
 
-// Util imports
-const rootDir = require("../util/path.util");
+const USERS = [];
 
 router.post("/create", ({ body }, res) => {
-  console.log(body);
-  res.redirect("/");
+  if (body.username) {
+    USERS.push({ name: body.username });
+    res.redirect("/users");
+  } else res.redirect("/");
 });
 
-router.get("/", (req, res) =>
-  res.sendFile(path.join(rootDir, "views", "users.html"))
-);
+router.get("/", (req, res) => {
+  console.log(USERS);
+  res.render("users", { docTitle: "Users", path: "/users", users: USERS });
+});
 
-module.exports = router;
+exports.routes = router;
+exports.USERS = USERS;
