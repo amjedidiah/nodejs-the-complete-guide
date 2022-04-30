@@ -4,6 +4,23 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 [Course Link](https://www.udemy.com/course/nodejs-the-complete-guide)
 
+## MVC
+
+1. Models
+   a. Represent code data
+   b. Work with data(e.g: save, fetch)
+2. Views
+   a. What the user sees
+   b. Decoupled from application code
+3. Controllers[routes]
+   a. Connects models and views
+   b. Split across middleware functions
+
+## What database To Use
+
+1. Use MongoDB for data that changes often
+2. Use SQL for data that changes less often, like user data
+
 ## Further Reading
 
 - [ ] [Primitive and reference types in JavaScript](https://academind.com/tutorials/reference-vs-primitive-values)
@@ -23,3 +40,13 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [More on debugging Node.js](https://nodejs.org/en/docs/guides/debugging-getting-started/)
 
 - [ ] [Express.js Official Docs](https://expressjs.com/en/starter/installing.html)
+
+- [ ] [Pug Docs](https://pugjs.org/api/getting-started.html)
+
+- [ ] [More on MVC](https://developer.mozilla.org/en-US/docs/Glossary/MVC)
+
+- [ ] [Learn more about MySQL/ SQL in General](https://www.w3schools.com/sql/)
+
+- [ ] [Learn more about the Node MySQL Package](https://github.com/sidorares/node-mysql2)
+
+- [ ] [Sequelize Official Docs](https://docs.sequelizejs.com)

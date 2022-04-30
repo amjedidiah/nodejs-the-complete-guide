@@ -1,0 +1,12 @@
+div(class="user" id="user-#{user.id}")
+  img(src="#{user?.image}")
+  p #{user.firstName} #{user.lastName}
+  p #{user.email}
+  if !users
+    div
+      p #{user.age}
+      p #{user.phoneNumber}
+      div #{user.bio}
+  form(action="/users/"+user.id+"/delete" method="post")
+    input(type="hidden" name="_method" value="delete")
+    button(type="submit" class="btn") Delete

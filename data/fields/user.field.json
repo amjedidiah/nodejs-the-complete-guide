@@ -1,0 +1,39 @@
+[
+    {
+        "type": "text",
+        "name": "firstName",
+        "aria-label": "First Name",
+        "placeholder": "e.g: John"
+    },
+    {
+        "type": "text",
+        "name": "lastName",
+        "aria-label": "Last Name",
+        "placeholder": "Doe"
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "aria-label": "Email",
+        "placeholder": "e.g: john.doe@example.com"
+    },
+    {
+        "type": "number",
+        "name": "age",
+        "aria-label": "Age",
+        "placeholder": "e.g: 25",
+        "min": 0
+    },
+    {
+        "type": "tel",
+        "name": "phoneNumber",
+        "aria-label": "Phone Number",
+        "placeholder": "e.g: +234 (816) 597-2229"
+    },
+    {
+        "type": "text",
+        "name": "bio",
+        "aria-label": "Bio",
+        "placeholder": "e.g: I am a Software Engineer"
+    }
+]

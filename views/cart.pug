@@ -1,0 +1,17 @@
+extends layouts/main.layout.pug
+
+block content
+  if products.length
+    ul
+      each product in products
+        li
+          include includes/product.include.pug
+          p Quantity: #{product.cartItem.quantity}
+          form(action="/cart/delete" method="post") 
+            input(type="hidden" name="id" value=product.id)
+            button(type="submit") Delete
+    h2 Total: #{products.reduce((total, product) => total + product.cartItem.quantity * product.price, 0)}
+    form(action="/orders/create" method="post")
+      button(type="submit") Checkout
+  else 
+    h1 No products in cart

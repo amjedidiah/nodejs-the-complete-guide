@@ -1,0 +1,21 @@
+[
+    {
+        "type": "text",
+        "name": "name",
+        "aria-label": "Product Name",
+        "placeholder": "e.g: Quartz Watch"
+    },
+    {
+        "type": "number",
+        "name": "price",
+        "aria-label": "Price",
+        "placeholder": "e.g: 250",
+        "min": 0
+    },
+    {
+        "type": "text",
+        "name": "description",
+        "aria-label": "Description",
+        "placeholder": "e.g: It costs a lot of money"
+    }
+]
