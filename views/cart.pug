@@ -6,11 +6,11 @@ block content
       each product in products
         li
           include includes/product.include.pug
-          p Quantity: #{product.cartItem.quantity}
+          p Quantity: #{product.quantity}
           form(action="/cart/delete" method="post") 
-            input(type="hidden" name="id" value=product.id)
+            input(type="hidden" name="id" value=product._id)
             button(type="submit") Delete
-    h2 Total: #{products.reduce((total, product) => total + product.cartItem.quantity * product.price, 0)}
+    h2 Total: #{products.reduce((total, product) => total + product.quantity * product.price, 0)}
     form(action="/orders/create" method="post")
       button(type="submit") Checkout
   else 

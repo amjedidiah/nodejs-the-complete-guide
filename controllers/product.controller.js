@@ -18,30 +18,29 @@ exports.productCreate = ({ body, user }, res) => {
 
   if (Object.values(bareBody).length >= 2) {
     if (bareBody.id) {
-      user
-        .getProducts({ where: { id: bareBody.id } })
-        .then(([product]) => product && product.update(bareBody))
+      Product.findByIdAndUpdate(bareBody.id, bareBody)
         .then(() => res.redirect("/products"))
         .catch((err) => {
           console.log(err);
           res.redirect("/products/add");
         });
     } else {
-      user &&
-        user
-          .createProduct(bareBody)
-          .then(() => res.redirect("/products"))
-          .catch((err) => {
-            console.log(err);
-            res.redirect("/products/add");
-          });
+      const product = new Product({...bareBody, userId: user._id});
+      product
+        .save()
+        .then(() => res.redirect("/products"))
+        .catch((err) => {
+          console.log(err);
+          res.redirect("/products/add");
+        });
     }
-  } else
-    res.redirect("/products/add");
+  } else res.redirect("/products/add");
 };
 
 exports.productGetAll = (req, res) =>
-  Product.findAll()
+  Product.find()
+    // .select('title price -_id')
+    // .populate('userId', 'name -_id')
     .then((products) =>
       res.render("products", {
         docTitle: "Products",
@@ -52,7 +51,7 @@ exports.productGetAll = (req, res) =>
     .catch((err) => console.log(err));
 
 exports.productGetOne = ({ params: { id } }, res) =>
-  Product.findByPk(id).then(
+  Product.findById(id).then(
     (product) =>
       product &&
       res.render("product", {
@@ -63,7 +62,7 @@ exports.productGetOne = ({ params: { id } }, res) =>
   );
 
 exports.productEdit = ({ params: { id } }, res) =>
-  Product.findByPk(id).then(
+  Product.findById(id).then(
     (product) =>
       product &&
       res.render("edit", {
@@ -75,8 +74,7 @@ exports.productEdit = ({ params: { id } }, res) =>
       })
   );
 
-exports.productDeleteOne = ({ params: {id} }, res) =>
-  Product.findByPk(id)
-    .then((product) => product.destroy())
+exports.productDeleteOne = ({ params: { id } }, res) =>
+  Product.findByIdAndDelete(id)
     .then(() => res.redirect("/products"))
     .catch((err) => console.log(err));

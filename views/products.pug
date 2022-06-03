@@ -6,6 +6,6 @@ block content
       each product in products
         li
           include includes/product.include.pug
-          a(href="products/" + product.id) Details
+          a(href="products/" + product._id) Details
   else 
     h1 No Products found

@@ -50,3 +50,11 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [Learn more about the Node MySQL Package](https://github.com/sidorares/node-mysql2)
 
 - [ ] [Sequelize Official Docs](https://docs.sequelizejs.com)
+
+- [ ] [MongoDB Official Docs](https://docs.mongodb.com/manual/core/security-encryption-at-rest/https://docs.mongodb.com/manual/)
+
+- [ ] [SQL vs NoSQL](https://academind.com/learn/web-dev/sql-vs-nosql/)
+
+- [ ] [Learn more about MongoDB](https://academind.com/learn/mongodb)
+
+- [ ] [Mongoose Official Docs](https://mongoosejs.com/docs/)

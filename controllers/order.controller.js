@@ -1,47 +1,55 @@
+const { default: mongoose } = require("mongoose");
 const Order = require("../models/order.model");
+const User = require("../models/user.model");
 
-exports.postOrder = (req, res) => {
-  let products;
-  let fetchedCart;
-
-  req.user
+exports.postOrder = ({ user }, res) =>
+  user
     .getCart()
-    .then((cart) => {
-      fetchedCart = cart;
-      return cart.getProducts();
+    .then((products) => {
+      const order = new Order({
+        products: products.map(({ quantity, ...rest }) => ({
+          product: rest,
+          quantity,
+        })),
+        userId: user,
+      });
+
+      return order.save();
     })
-    .then((p) => {
-      products = p;
-      return req.user.createOrder();
-    })
-    .then((order) => {
-      return order.addProducts(
-        products.map((product) => {
-          product.orderItem = { quantity: product.cartItem.quantity };
-          return product;
-        })
-      );
-    })
-    .then(() => fetchedCart.setProducts(null))
+    .then(() => user.clearCart())
     .then(() => res.redirect(`/orders`))
     .catch((err) => console.log(err));
-};
 
 exports.getOrders = (req, res) => {
-  req.user
-    .getOrders({ include: ["products"] })
-    .then((orders) =>
-      res.render("orders", {
+  Order.find()
+    .then((orders) => {
+      console.log("orders", orders, orders.map((order) => ({
+        ...order,
+        products: !orders?.products
+          ? []
+          : order.products.map(({ product, quantity }) => ({
+              quantity,
+              ...product,
+            })),
+      })));
+      return res.render("orders", {
         docTitle: "Orders",
-        path: `/users/orders/${req.user.id}`,
-        orders,
-      })
-    )
+        path: `/users/orders/${req.user._id}`,
+        orders: orders.map((order) => ({
+          ...order?._doc,
+          products: !order?._doc?.products
+            ? []
+            : order.products.map(({ product, quantity }) => ({
+                quantity,
+                ...product,
+              })),
+        })),
+      });
+    })
     .catch((err) => console.log(err));
 };
 
 exports.deleteOrder = ({ params: { id } }, res) =>
-  Order.findByPk(id)
-    .then((order) => order.destroy())
+  Order.findByIdAndDelete(id)
     .then(() => res.redirect("/orders"))
     .catch((err) => console.log(err));

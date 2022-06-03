@@ -1,11 +1,11 @@
-div(class="product" id="product-#{product.id}")
-    img(src="#{product?.image}")
-    p #{product.name} 
-    p Price: #{product.price}
-    if !products
-        div
-            div #{product.description}
-    if !path.includes('cart')
-        form(action="/products/"+product.id+"/delete" method="post")
-            input(type="hidden" name="_method" value="delete")
-            button(type="submit" class="btn") Delete
+div(class="product" id="product-#{product._id}")
+  img(src="#{product?.image}")
+  p #{product.name} 
+  p Price: #{product.price}
+  if !products
+    div
+      div #{product.description}
+  if !path.includes('cart')
+    form(action="/products/"+product._id+"/delete" method="post")
+      input(type="hidden" name="_method" value="delete")
+      button(type="submit" class="btn") Delete

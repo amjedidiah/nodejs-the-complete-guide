@@ -5,15 +5,15 @@ block content
     ul
       each order in orders
         li
-          p Order ID: #{order.id}
+          p Order ID: #{order._id}
           p Date: #{order.createdAt}
           ul
             each product in order.products
               li
                 p Name: #{product.name}
                 p Price: #{product.price}
-                p Quantity: #{product.orderItem.quantity}
-          form(action="/orders/"+order.id+"/delete" method="post")
-            button(type="submit") Delete 
+                p Quantity: #{product.quantity}
+          form(action="/orders/"+order._id+"/delete" method="post")
+            button(type="submit") Delete
   else 
     h1 No Orders found

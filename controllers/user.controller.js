@@ -18,21 +18,21 @@ exports.userCreate = ({ body }, res) => {
 
   if (Object.values(bareBody).length >= 5) {
     if (bareBody.id) {
-      User.findByPk(bareBody.id)
-        .then((user) => user && user.update(bareBody))
+      User.findByIdAndUpdate(bareBody.id, bareBody)
         .then(() => res.redirect("/users"))
         .catch(() => res.redirect("/users/add"));
     } else {
-      User.create(bareBody)
+      const user = new User(bareBody);
+      user
+        .save()
         .then(() => res.redirect("/users"))
         .catch((err) => console.log(err));
     }
-  } else
-    res.redirect("/users/add");
+  } else res.redirect("/users/add");
 };
 
 exports.userGetAll = (req, res) =>
-  User.findAll()
+  User.find()
     .then((users) =>
       res.render("users", {
         docTitle: "Users",
@@ -43,7 +43,7 @@ exports.userGetAll = (req, res) =>
     .catch((err) => console.log(err));
 
 exports.userGetOne = ({ params: { id } }, res) =>
-  User.findByPk(id).then(
+  User.findById(id).then(
     (user) =>
       user &&
       res.render("user", {
@@ -53,7 +53,7 @@ exports.userGetOne = ({ params: { id } }, res) =>
   );
 
 exports.userEdit = ({ params: { id } }, res) =>
-  User.findByPk(id).then(
+  User.findById(id).then(
     (user) =>
       user &&
       res.render("edit", {
@@ -66,6 +66,6 @@ exports.userEdit = ({ params: { id } }, res) =>
   );
 
 exports.userDeleteOne = ({ params: { id } }, res) =>
-  User.destroy({ where: { id } })
+  User.findByIdAndDelete(id)
     .then(() => res.redirect("/users"))
     .catch((err) => console.log(err));

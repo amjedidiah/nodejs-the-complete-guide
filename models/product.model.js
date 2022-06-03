@@ -1,25 +1,21 @@
-const {INTEGER, STRING} = require("sequelize");
-const sequelize = require("../util/database.util");
-const Product = sequelize.define("product", {
-  id: {
-    type: INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  name: {
-    type: STRING,
-    allowNull: false,
-  },
-  price: {
-    type: INTEGER,
-    allowNull: false,
-  },
-  description: {
-    type: STRING,
-    allowNull: true,
-    defaultValue: ""
-  },
-});
+const {Schema, model} = require("mongoose");
 
-module.exports = Product;
+const ProductSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    description: String,
+    imageURL: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
+})
+
+module.exports = model("Product", ProductSchema);
