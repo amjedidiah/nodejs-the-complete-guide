@@ -13,7 +13,8 @@ block content
                 p Name: #{product.name}
                 p Price: #{product.price}
                 p Quantity: #{product.quantity}
-          form(action="/orders/"+order._id+"/delete" method="post")
-            button(type="submit") Delete
+          if isAutheticated
+            form(action="/orders/"+order._id+"/delete" method="post")
+              button(type="submit") Delete
   else 
     h1 No Orders found

@@ -2,8 +2,13 @@ const { default: mongoose } = require("mongoose");
 const Order = require("../models/order.model");
 const User = require("../models/user.model");
 
-exports.postOrder = ({ user }, res) =>
-  user
+exports.postOrder = ({ session: { isLoggedIn }, user }, res) => {
+  if (!isLoggedIn)
+    return res
+      .status(400)
+      .json({ message: "You must be logged in to place an order!" });
+
+  return user
     .getCart()
     .then((products) => {
       const order = new Order({
@@ -17,39 +22,38 @@ exports.postOrder = ({ user }, res) =>
       return order.save();
     })
     .then(() => user.clearCart())
-    .then(() => res.redirect(`/orders`))
-    .catch((err) => console.log(err));
-
-exports.getOrders = (req, res) => {
-  Order.find()
-    .then((orders) => {
-      console.log("orders", orders, orders.map((order) => ({
-        ...order,
-        products: !orders?.products
-          ? []
-          : order.products.map(({ product, quantity }) => ({
-              quantity,
-              ...product,
-            })),
-      })));
-      return res.render("orders", {
-        docTitle: "Orders",
-        path: `/users/orders/${req.user._id}`,
-        orders: orders.map((order) => ({
-          ...order?._doc,
-          products: !order?._doc?.products
-            ? []
-            : order.products.map(({ product, quantity }) => ({
-                quantity,
-                ...product,
-              })),
-        })),
-      });
-    })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => res.redirect(`/orders`));
 };
 
-exports.deleteOrder = ({ params: { id } }, res) =>
-  Order.findByIdAndDelete(id)
-    .then(() => res.redirect("/orders"))
-    .catch((err) => console.log(err));
+exports.getOrders = ({ session: { user, isLoggedIn: isAuthenticated } }, res) =>
+  isAuthenticated
+    ? Order.find(({ userId: { _id: user._id } }))
+        .then((orders) =>
+          res.render("orders", {
+            docTitle: "Orders",
+            path: `/users/orders/${user._id}`,
+            orders: orders.map((order) => ({
+              ...order?._doc,
+              products: !order?._doc?.products
+                ? []
+                : order.products.map(({ product, quantity }) => ({
+                    quantity,
+                    ...product,
+                  })),
+            })),
+            isAuthenticated,
+          })
+        )
+        .catch((err) => {
+          console.log(err);
+          return res.redirect("/");
+        })
+    : res.redirect("/");
+
+exports.deleteOrder = ({ params: { id }, session: { isLoggedIn } }, res) =>
+  isLoggedIn
+    ? Order.findByIdAndDelete(id)
+        .catch((err) => console.log(err))
+        .finally(() => res.redirect("/orders"))
+    : res.redirect("/");

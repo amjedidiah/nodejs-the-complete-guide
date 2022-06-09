@@ -5,7 +5,7 @@ div(class="product" id="product-#{product._id}")
   if !products
     div
       div #{product.description}
-  if !path.includes('cart')
+  if !path.includes('cart') && isAuthenticated
     form(action="/products/"+product._id+"/delete" method="post")
       input(type="hidden" name="_method" value="delete")
       button(type="submit" class="btn") Delete

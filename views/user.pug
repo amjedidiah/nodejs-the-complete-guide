@@ -2,4 +2,5 @@ extends layouts/main.layout.pug
 
 block content
   include includes/user.include.pug
-  a(href="/users/"+user._id+"/edit") Edit
+  if isAuthenticated 
+    a(href="/users/"+user._id+"/edit") Edit

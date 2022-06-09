@@ -21,6 +21,11 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 1. Use MongoDB for data that changes often
 2. Use SQL for data that changes less often, like user data
 
+## Sessions
+
+- In e-commerce platforms, consider using sessions to store user cart data so that it is sent across on every user request, that needs it.
+- Advertising and tracking are common uses of sessions
+
 ## Further Reading
 
 - [ ] [Primitive and reference types in JavaScript](https://academind.com/tutorials/reference-vs-primitive-values)
@@ -58,3 +63,9 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [Learn more about MongoDB](https://academind.com/learn/mongodb)
 
 - [ ] [Mongoose Official Docs](https://mongoosejs.com/docs/)
+
+- [ ] [More on Sessions](https://www.quora.com/What-is-a-session-in-a-Web-Application)
+
+- [ ] [More on Cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+
+- [ ] [Express-session Official Docs](https://github.com/expressjs/session)
