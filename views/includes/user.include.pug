@@ -7,7 +7,8 @@ div(class="user" id="user-#{user._id}")
       p #{user.age}
       p #{user.phoneNumber}
       div #{user.bio}
-  if isAuthenticated
+  if isAuthenticated && authUserIsAdmin && user.type != "admin"
     form(action="/users/"+user._id+"/delete" method="post")
+      input(type="hidden" name="_csrf" value=csrfToken)
       input(type="hidden" name="_method" value="delete")
       button(type="submit" class="btn") Delete

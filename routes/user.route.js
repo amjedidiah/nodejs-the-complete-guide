@@ -4,20 +4,20 @@ const router = new express.Router();
 
 // Controller imports
 const {
-  userAdd,
   userCreate,
   userGetAll,
   userDeleteOne,
   userGetOne,
   userEdit
 } = require("../controllers/user.controller");
+const {isAuth} = require("../middlewares/auth.middleware");
+const { isAdmin, isMine } = require("../middlewares/user.middleware");
 
 // Routes
-router.get("/add", userAdd);
-router.post("/create", userCreate);
+router.post("/create", isAuth, isMine, userCreate);
 router.get("/", userGetAll);
 router.get("/:id", userGetOne);
-router.get("/:id/edit", userEdit);
-router.post("/:id/delete", userDeleteOne);
+router.get("/:id/edit", isAuth, isMine, userEdit);
+router.post("/:id/delete", isAuth, isAdmin, userDeleteOne);
 
 module.exports = router;

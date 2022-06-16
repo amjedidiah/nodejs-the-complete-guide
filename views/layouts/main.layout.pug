@@ -22,13 +22,15 @@ html(lang="en")
             li.nav-item
               a.nav-link(href="/orders", class=(path === "/orders" && "active")) Orders
             li.nav-item
-              a.nav-link(href="/users/add" class="btn") Add User
-            li.nav-item
               a.nav-link(href="/products/add" class="btn") Add Product
-            li.nav-item
-              a.nav-link(href="/logout" class="btn") Logout
+            li.nav-item.no-link
+              form(action="/logout" method="post")
+                input(type="hidden" name="_csrf" value=csrfToken)
+                button(type="submit" class="btn") Logout
           if !isAuthenticated
             li.nav-item
               a.nav-link(href="/login" class="btn") Login
+            li.nav-item
+              a.nav-link(href="/register" class="btn") Register
     main.container
       block content

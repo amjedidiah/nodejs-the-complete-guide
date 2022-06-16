@@ -4,6 +4,8 @@ block content
   include includes/product.include.pug
   if isAuthenticated
     form(action="/cart/add" method="post")
+      input(type="hidden" name="_csrf" value=csrfToken)
       input(type="hidden" name="id" value=product._id)
       button(type="submit") Add to cart
-    a(href="/products/" + product._id + "/edit") Edit
+    if isMine
+      a(href="/products/" + product._id + "/edit") Edit

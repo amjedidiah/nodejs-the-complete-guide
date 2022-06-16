@@ -46,6 +46,10 @@ a {
   margin: 10px 15px 10px 0;
 }
 
+.nav-item.no-link {
+  margin-top: 3px;
+}
+
 .nav-link {
   color: var(--black);
   text-transform: uppercase;

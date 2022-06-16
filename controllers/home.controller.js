@@ -1,2 +1,2 @@
-module.exports = ({ session: { isLoggedIn: isAuthenticated } }, res) =>
-  res.render("home", { docTitle: "Home", path: "/", isAuthenticated });
+module.exports = (req, res) =>
+  res.render("home", { docTitle: "Home", path: "/" });

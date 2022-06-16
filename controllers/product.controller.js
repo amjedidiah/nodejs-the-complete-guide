@@ -2,24 +2,18 @@ const Product = require("../models/product.model");
 const User = require("../models/user.model");
 const productFields = require("../data/fields/product.field.json");
 
-exports.productAdd = ({ session: {isLoggedIn: isAuthenticated} }, res) =>
-  isAuthenticated ?
+exports.productAdd = (req, res) =>
   res.render("add", {
     docTitle: "Add a Product",
     fields: productFields,
     action: "add",
     item: "product",
-    isAuthenticated
-  }) : res.redirect("/products");
+  });
 
-exports.productCreate = ({ body, session: { user, isLoggedIn } }, res) => {
+exports.productCreate = ({ body, user }, res) => {
   let bareBody = { ...body };
 
-  Object.keys(bareBody).forEach(
-    (key) => bareBody[key] === "" && delete bareBody[key]
-  );
-
-  if (Object.values(bareBody).length >= 2 && isLoggedIn) {
+  if (Object.values(bareBody).length >= 2) {
     if (bareBody.id) {
       Product.findByIdAndUpdate(bareBody.id, bareBody)
         .then(() => res.redirect("/products"))
@@ -28,9 +22,12 @@ exports.productCreate = ({ body, session: { user, isLoggedIn } }, res) => {
           res.redirect("/products/add");
         });
     } else {
-      const product = new Product({ ...bareBody, userId: user._id });
+      const product = new Product({ ...bareBody, userId: user });
       product
         .save()
+        .then(({ _id, userId }) =>
+          User.findByIdAndUpdate(userId, { $push: { products: _id } })
+        )
         .then(() => res.redirect("/products"))
         .catch((err) => {
           console.log(err);
@@ -40,7 +37,7 @@ exports.productCreate = ({ body, session: { user, isLoggedIn } }, res) => {
   } else res.redirect("/products/add");
 };
 
-exports.productGetAll = ({ session: { isLoggedIn: isAuthenticated } }, res) =>
+exports.productGetAll = ({ user: authUser }, res) =>
   Product.find()
     // .select('title price -_id')
     // .populate('userId', 'name -_id')
@@ -49,57 +46,64 @@ exports.productGetAll = ({ session: { isLoggedIn: isAuthenticated } }, res) =>
         docTitle: "Products",
         path: "/products",
         products,
-        isAuthenticated,
+        authUserIsAdmin: authUser?.type == "admin",
+        authUser,
       })
     )
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.redirect("/");
     });
 
-exports.productGetOne = (
-  { params: { id }, session: { isLoggedIn: isAuthenticated } },
-  res
-) =>
-  Product.findById(id).then(
-    (product) =>
-      product &&
-      res.render("product", {
-        docTitle: `${product.name}`,
-        path: "/product",
-        product,
-        isAuthenticated,
-      })
-  ).catch((err) => {
-    console.log(err);
-    res.redirect("/products");
-  });
+exports.productGetOne = ({ params: { id }, user: authUser }, res) =>
+  Product.findById(id)
+    .populate("userId", "firstName lastName")
+    .then(
+      (product) =>
+        product &&
+        res.render("product", {
+          docTitle: `${product.name}`,
+          path: "/product",
+          product,
+          authUserIsAdmin: authUser?.type == "admin",
+          authUser,
+          isMine: product.userId?._id.toString() == authUser?._id.toString(),
+        })
+    )
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/products");
+    });
 
-exports.productEdit = ({ params: { id }, session: { isLoggedIn: isAuthenticated } }, res) =>
-isAuthenticated ?
-  Product.findById(id).then(
-    (product) =>
-      product &&
-      res.render("edit", {
-        docTitle: `Edit ${product.name}`,
-        data: product,
-        fields: productFields,
-        action: "update",
-        item: "product",
-        isAuthenticated
-      })
-  )
-  .catch((err) => {
-    console.log(err);
-    res.redirect("/products");
-  }) : res.redirect("/products");
+exports.productEdit = ({ params: { id }, user }, res) =>
+  Product.findById(id)
+    .then(
+      (product) =>
+        product &&
+        res.render("edit", {
+          docTitle: `Edit ${product.name}`,
+          data: product,
+          fields: productFields,
+          action: "update",
+          item: "product",
+        })
+    )
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/products");
+    });
 
-exports.productDeleteOne = (
-  { params: { id }, session: { isLoggedIn }, user },
-  res
-) =>
-  isLoggedIn ? 
+exports.productDeleteOne = ({ params: { id }, user }, res) =>
   Product.findByIdAndDelete(id)
-    .then(() => user.removeFromCart(id))
+    .then(() =>
+      User.updateOne(
+        { _id: user?._id },
+        { $pull: { products: id } }
+      )
+    )
+    .then(() => User.updateMany(
+      {},
+      { $pull : { cart : { productId: id } } }
+    ))
     .catch((err) => console.log(err))
-    .finally(() => res.redirect("/products")): res.redirect("/products");
+    .finally(() => res.redirect("/products"));

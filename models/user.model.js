@@ -1,60 +1,56 @@
 const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
+  firstName: String,
+  lastName: String,
   email: {
     type: String,
     required: true,
+    unique: true,
   },
-  age: {
-    type: Number,
-    required: true,
-  },
-  phoneNumber: {
+  password: {
     type: String,
     required: true,
   },
+  age: Number,
+  phoneNumber: String,
   bio: String,
-  cart: {
-    items: [
-      {
-        productId: {
-          type: Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
+  products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  cart: [
+    {
+      productId: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
       },
-    ],
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  type: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
   },
 });
 
 UserSchema.methods.addToCart = function (pID) {
-  const { items } = this.cart;
-  const itemIndex = items.findIndex((it) => it.productId == pID);
+  const itemIndex = this.cart.findIndex((it) => it.productId == pID);
 
   if (itemIndex !== -1) {
-    this.cart.items[itemIndex].quantity += 1;
+    this.cart[itemIndex].quantity += 1;
   } else {
-    this.cart.items.push({ productId: pID, quantity: 1 });
+    this.cart.push({ productId: pID, quantity: 1 });
   }
 
   return this.save();
 };
 
 UserSchema.methods.getCart = function () {
-  return this.cart.populate("items.productId").then((cart) =>
-    cart.items.map((it) => ({
+  return this.populate("cart.productId").then(({ cart }) =>
+    cart.map((it) => ({
       quantity: it?.quantity,
       ...it?.productId._doc,
     }))
@@ -62,15 +58,14 @@ UserSchema.methods.getCart = function () {
 };
 
 UserSchema.methods.removeFromCart = function (pID) {
-  const items = this.cart.items;
-  const filteredItems = items.filter((item) => item.productId != pID);
-  this.cart.items = filteredItems;
+  const filteredItems = this.cart.filter((item) => item.productId != pID);
+  this.cart = filteredItems;
 
   return this.save();
 };
 
 UserSchema.methods.clearCart = function () {
-  this.cart = { items: [] };
+  this.cart = [];
   return this.save();
 };
 

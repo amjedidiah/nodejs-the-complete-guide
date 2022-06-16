@@ -8,10 +8,12 @@ block content
           include includes/product.include.pug
           p Quantity: #{product.quantity}
           form(action="/cart/delete" method="post") 
+            input(type="hidden" name="_csrf" value=csrfToken)
             input(type="hidden" name="id" value=product._id)
             button(type="submit") Delete
     h2 Total: #{products.reduce((total, product) => total + product.quantity * product.price, 0)}
     form(action="/orders/create" method="post")
+      input(type="hidden" name="_csrf" value=csrfToken)
       button(type="submit") Checkout
   else 
     h1 No products in cart

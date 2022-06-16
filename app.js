@@ -5,6 +5,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const csrfProtection = require('csurf');
 
 // Environment variables
 require("dotenv").config();
@@ -17,10 +18,6 @@ const routes = require("./routes");
 
 // Util imports
 const rootDIR = require("./util/path.util");
-
-// Mongoose Models
-const User = require("./models/user.model");
-const [userData] = require("./data/users");
 
 // App
 const app = express();
@@ -49,6 +46,12 @@ app.use(
     })
   })
 )
+app.use(csrfProtection());
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 // Routes definition
 app.use(routes);
@@ -56,14 +59,6 @@ app.use(routes);
 // Sync models
 mongoose
   .connect(MONGODB_STRING)
-  .then(() => User.findOne())
-  .then((user) => {
-    if (!user) {
-      console.log("Creating new user with: ", userData);
-      const newUser = new User(userData);
-      newUser.save();
-    }
-  })
   .then(() =>
     app.listen(port, () => console.log(`Server active on port: ${port}`))
   )

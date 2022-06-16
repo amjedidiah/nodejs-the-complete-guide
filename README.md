@@ -26,6 +26,8 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - In e-commerce platforms, consider using sessions to store user cart data so that it is sent across on every user request, that needs it.
 - Advertising and tracking are common uses of sessions
 
+## Cross-Site Request Forgery (CSRF)
+
 ## Further Reading
 
 - [ ] [Primitive and reference types in JavaScript](https://academind.com/tutorials/reference-vs-primitive-values)
@@ -69,3 +71,18 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [More on Cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 
 - [ ] [Express-session Official Docs](https://github.com/expressjs/session)
+
+- [ ] [Bcrypt Official Docs](https://github.com/dcodeIO/bcrypt.js)
+
+- [ ] [More on CSRF Attacks](https://www.acunetix.com/websitesecurity/csrf-attacks)
+
+## ToDO
+
+- Install and use `connect-flash`
+
+```js
+app.use((req, res, next) => {
+  res.locals.errorMessage = req.flash("error");
+  next();
+});
+```
