@@ -3,19 +3,25 @@ const registerFields = require("../data/fields/register.field.json");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 
-exports.postRegister = ({ body: { confirmPassword, ...rest } }, res) => {
+exports.postRegister = (req, res) => {
+  const {
+    body: { confirmPassword, ...rest },
+  } = req;
   let bareBody = { ...rest };
 
   Object.keys(bareBody).forEach(
     (key) => bareBody[key] === "" && delete bareBody[key]
   );
 
-  if (Object.values(bareBody).length < 3)
-    return res.status(400).json({ message: "All fields are required!" });
-    
+  if (Object.values(bareBody).length < 3) {
+    req.flash("error", "Please fill in all fields!");
+    return res.redirect("/register");
+  }
 
-  if (rest.password !== confirmPassword)
-    return res.status(400).json({ message: "Passwords do not match!" });
+  if (rest.password !== confirmPassword) {
+    req.flash("error", "Passwords do not match!");
+    return res.redirect("/register");
+  }
 
   bcrypt
     .hash(rest.password, 12)
@@ -29,33 +35,38 @@ exports.postRegister = ({ body: { confirmPassword, ...rest } }, res) => {
       return user.save();
     })
     .then(() => res.redirect("/login"))
-    .catch((err) => {
-      console.log(err);
-      res.redirect("/register");
-    });
+    .catch((err) => console.log(err));
 };
 
-exports.postLogin = ({ body, session }, res) =>
-  User.findOne({ email: body.email })
+exports.postLogin = (req, res) => {
+  const { body, session } = req;
+
+  return User.findOne({ email: body.email })
     .then((user) => {
-      if (!user) return res.status(400).json({ message: "User not found!" });
+      if (!user) {
+        req.flash("error", "Invalid username or password!");
+        res.redirect("/login");
+      }
 
       const isSame = bcrypt.compareSync(body.password, user.password);
-      if (!isSame) throw({ message: "Invalid password!" });
+      if (!isSame) {
+        req.flash("error", "Invalid username or password!");
+        res.redirect("/login");
+      }
       session.user = user;
       session.isLoggedIn = true;
 
       session.save((err) => {
-        if (err)
-          return res.status(500).json({ message: "Error saving session!" });
+        if (err) {
+          req.flash("error", "Error saving session!");
+          res.redirect("/login");
+        }
 
         return res.redirect("/");
       });
     })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).json({ message: "Something went wrong!" });
-    });
+    .catch((err) => console.log(err));
+};
 
 exports.getLogin = ({ session: { isLoggedIn } }, res) =>
   res.render("auth/login", {
@@ -75,10 +86,9 @@ exports.getRegister = ({ session: { isLoggedIn } }, res) =>
     action: "register",
   });
 
-exports.postLogout = ({ session }, res) =>
+exports.postLogout = (req, res) =>
   session.destroy((err) => {
-    if (err)
-      return res.status(500).json({ message: "Error destroying session!" });
+    if (err) console.log(err);
 
-    return res.redirect("/");
+    res.redirect("/");
   });

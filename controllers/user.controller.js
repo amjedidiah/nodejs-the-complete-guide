@@ -4,7 +4,8 @@ const Order = require("../models/order.model");
 const userFields = require("../data/fields/user.field.json");
 const { Types } = require("mongoose");
 
-exports.userCreate = ({ body, user: authUser }, res) => {
+exports.userCreate = (req, res) => {
+  const { body, user: authUser } = req
   let bareBody = { ...body };
 
   if (Object.values(bareBody).length >= 1) {
@@ -13,7 +14,7 @@ exports.userCreate = ({ body, user: authUser }, res) => {
         .then(() => res.redirect("/users"))
         .catch((err) => {
           console.log(err);
-          res.redirect("/users/add");
+          res.redirect(req?.originalUrl || req?.url);
         });
     } else {
       res.redirect("/users/add");

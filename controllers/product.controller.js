@@ -10,7 +10,8 @@ exports.productAdd = (req, res) =>
     item: "product",
   });
 
-exports.productCreate = ({ body, user }, res) => {
+exports.productCreate = (req, res) => {
+  const { body, user } = req
   let bareBody = { ...body };
 
   if (Object.values(bareBody).length >= 2) {
@@ -19,7 +20,7 @@ exports.productCreate = ({ body, user }, res) => {
         .then(() => res.redirect("/products"))
         .catch((err) => {
           console.log(err);
-          res.redirect("/products/add");
+          res.redirect(req?.originalUrl || req?.url);
         });
     } else {
       const product = new Product({ ...bareBody, userId: user });

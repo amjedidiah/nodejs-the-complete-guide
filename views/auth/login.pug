@@ -3,4 +3,7 @@ extends ../layouts/main.layout.pug
 block content
     div.header__home
         h1 Login to your account
+    if errorMessage
+        div.error
+            p #{errorMessage}
     include ../includes/form.include.pug
