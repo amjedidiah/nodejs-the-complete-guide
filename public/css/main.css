@@ -94,11 +94,13 @@ input:focus {
   border-radius: 5px 0 0 5px;
 }
 
-button, .btn, .btn:hover{
+button,
+.btn,
+.btn:hover {
   background: var(--purple);
   padding: 7px 10px;
   color: var(--white);
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  border: none
+  border: none;
 }

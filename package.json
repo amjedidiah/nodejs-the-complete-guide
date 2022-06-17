@@ -4,7 +4,9 @@
   "description": "Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authentication, use MongoDB, SQL & much more!",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "prelint": "npx prettier --write .",
+    "lint": "npx eslint ./ --ext .js,.ts  --fix || false",
+    "predev": "yarn run lint",
     "dev": "bash ./scripts/dev.sh",
     "start": "nodemon"
   },
@@ -31,10 +33,15 @@
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.3",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.5",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "pug": "^3.0.2",
     "sequelize": "^6.15.0"
   },
   "devDependencies": {
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.15"
   }
 }

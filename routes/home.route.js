@@ -1,10 +1,11 @@
 // Module imports
-const express = require("express");
+const express = require('express');
+
 const router = new express.Router();
 
 // Controller imports
-const homeController = require("../controllers/home.controller");
+const homeController = require('../controllers/home.controller');
 
-router.use("/", homeController);
+router.use('/', homeController);
 
 module.exports = router;

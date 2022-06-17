@@ -76,13 +76,11 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 - [ ] [More on CSRF Attacks](https://www.acunetix.com/websitesecurity/csrf-attacks)
 
+- [ ] [Nodemailer Official Docs](https://nodemailer.com/about/)
+
+- [ ] [SendGrid Official Docs](https://sendgrid.com/docs/)
+
 ## ToDO
 
-- Install and use `connect-flash`
-
-```js
-app.use((req, res, next) => {
-  res.locals.errorMessage = req.flash("error");
-  next();
-});
-```
+- Install and use `nodemailer` `nodemailer-sendgrid-transport`
+- Signup on sendgrid

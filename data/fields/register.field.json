@@ -1,20 +1,20 @@
 [
-    {
-        "type": "email",
-        "name": "email",
-        "aria-label": "Email",
-        "placeholder": "e.g: john.doe@example.com"
-    },
-    {
-        "type": "password",
-        "name": "password",
-        "aria-label": "Password",
-        "placeholder": "********"
-    },
-    {
-        "type": "text",
-        "name": "confirmPassword",
-        "aria-label": "Confirm Password",
-        "placeholder": "********"
-    }
+  {
+    "type": "email",
+    "name": "email",
+    "aria-label": "Email",
+    "placeholder": "e.g: john.doe@example.com"
+  },
+  {
+    "type": "password",
+    "name": "password",
+    "aria-label": "Password",
+    "placeholder": "********"
+  },
+  {
+    "type": "text",
+    "name": "confirmPassword",
+    "aria-label": "Confirm Password",
+    "placeholder": "********"
+  }
 ]

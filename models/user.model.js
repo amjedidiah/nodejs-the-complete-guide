@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const UserSchema = new Schema({
   firstName: String,
@@ -15,12 +15,12 @@ const UserSchema = new Schema({
   age: Number,
   phoneNumber: String,
   bio: String,
-  products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   cart: [
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: "Product",
+        ref: 'Product',
         required: true,
       },
       quantity: {
@@ -31,13 +31,15 @@ const UserSchema = new Schema({
   ],
   type: {
     type: String,
-    enum: ["user", "admin"],
-    default: "user",
+    enum: ['user', 'admin'],
+    default: 'user',
   },
 });
 
 UserSchema.methods.addToCart = function (pID) {
-  const itemIndex = this.cart.findIndex((it) => it.productId == pID);
+  const itemIndex = this.cart.findIndex(
+    (it) => it.productId.toString() === pID.toString(),
+  );
 
   if (itemIndex !== -1) {
     this.cart[itemIndex].quantity += 1;
@@ -49,16 +51,16 @@ UserSchema.methods.addToCart = function (pID) {
 };
 
 UserSchema.methods.getCart = function () {
-  return this.populate("cart.productId").then(({ cart }) =>
-    cart.map((it) => ({
-      quantity: it?.quantity,
-      ...it?.productId._doc,
-    }))
-  );
+  return this.populate('cart.productId').then(({ cart }) => cart.map((it) => ({
+    quantity: it?.quantity,
+    ...it?.productId._doc,
+  })));
 };
 
 UserSchema.methods.removeFromCart = function (pID) {
-  const filteredItems = this.cart.filter((item) => item.productId != pID);
+  const filteredItems = this.cart.filter(
+    (item) => item.productId.toString() !== pID.toString(),
+  );
   this.cart = filteredItems;
 
   return this.save();
@@ -69,4 +71,4 @@ UserSchema.methods.clearCart = function () {
   return this.save();
 };
 
-module.exports = model("User", UserSchema);
+module.exports = model('User', UserSchema);

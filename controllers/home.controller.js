@@ -1,2 +1,1 @@
-module.exports = (req, res) =>
-  res.render("home", { docTitle: "Home", path: "/" });
+module.exports = (req, res) => res.render('home', { docTitle: 'Home', path: '/' });
