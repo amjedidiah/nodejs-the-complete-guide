@@ -34,6 +34,8 @@ const UserSchema = new Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  resetToken: String,
+  resetTokenExpiration: Date,
 });
 
 UserSchema.methods.addToCart = function (pID) {

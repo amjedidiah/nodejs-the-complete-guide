@@ -1,0 +1,8 @@
+[
+  {
+    "type": "email",
+    "name": "email",
+    "aria-label": "Email",
+    "placeholder": "e.g: john.doe@example.com"
+  }
+]

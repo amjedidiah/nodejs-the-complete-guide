@@ -1,5 +1,8 @@
 form(method="POST" action= item ? "/" + item + "s/create" : formAction)
-  input(type="hidden" name="_csrf" value=csrfToken)
-  each field in fields
-    input(type=(field.type) name=(field.name) aria-label=(field["aria-label"]) placeholder=(field.placeholder), value=data && data[field.name])
-  button(type="submit") #{action} #{item}
+    input(type="hidden" name="_csrf" value=csrfToken)
+    if token
+        input(type="hidden" name="userId" value=userId)
+        input(type="hidden" name="token" value=token)
+    each field in fields
+        input(type=(field.type) name=(field.name) aria-label=(field["aria-label"]) placeholder=(field.placeholder), value=data && data[field.name])
+    button(type="submit") #{action} #{item}

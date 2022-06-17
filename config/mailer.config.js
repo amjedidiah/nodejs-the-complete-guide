@@ -1,14 +1,9 @@
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 
-// Environment variables
-require('dotenv').config();
-
-const { SENDGRID_API_KEY } = process.env;
-
 const options = {
   auth: {
-    api_key: SENDGRID_API_KEY,
+    api_key: process.env.SENDGRID_API_KEY,
   },
 };
 

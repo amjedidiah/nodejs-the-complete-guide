@@ -81,8 +81,3 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [SendGrid Official Docs](https://sendgrid.com/docs/)
 
 ## ToDO
-
-- Send an email with send-grid
-
-- `getReset` controller with route and view
-- reset password link in login
