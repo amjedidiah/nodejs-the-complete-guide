@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const mailer = require('../config/mailer.config');
 const loginFields = require('../data/fields/login.field.json');
 const registerFields = require('../data/fields/register.field.json');
 const User = require('../models/user.model');
@@ -35,7 +36,18 @@ exports.postRegister = (req, res) => {
 
       return user.save();
     })
-    .then(() => res.redirect('/login'))
+    .then(() => {
+      res.redirect('/login');
+      return mailer.sendMail({
+        to: rest.email,
+        from: 'welcome@mystore.com',
+        subject: 'Welcome to My Store',
+        html: `<div>
+                <h1>Welcome to My Store!</h1>
+                <p>You have successfully registered!</p>
+              </div>`,
+      });
+    })
     .catch((err) => devLog('log', err));
 };
 
