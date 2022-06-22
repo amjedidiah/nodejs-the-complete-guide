@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const { validationResult } = require('express-validator');
 const mailer = require('../config/mailer.config');
 const loginFields = require('../data/fields/login.field.json');
 const registerFields = require('../data/fields/register.field.json');
@@ -10,30 +11,26 @@ const User = require('../models/user.model');
 const devLog = require('../util/debug.util');
 
 exports.postRegister = (req, res) => {
-  const {
-    body: { confirmPassword, ...rest },
-  } = req;
-  const bareBody = { ...rest };
+  const { body } = req;
 
-  Object.keys(bareBody).forEach(
-    (key) => bareBody[key] === '' && delete bareBody[key],
-  );
-
-  if (Object.values(bareBody).length < 3) {
-    req.flash('error', 'Please fill in all fields!');
-    return res.redirect('/register');
-  }
-
-  if (rest.password !== confirmPassword) {
-    req.flash('error', 'Passwords do not match!');
-    return res.redirect('/register');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/register', {
+      docTitle: 'Register',
+      path: '/register',
+      fields: registerFields,
+      formAction: '/register',
+      action: 'register',
+      errorMessage: errors.array()[0].msg,
+      data: req.body,
+    });
   }
 
   return bcrypt
-    .hash(rest.password, 12)
+    .hash(body.password, 12)
     .then((hash) => {
       const user = new User({
-        ...rest,
+        ...body,
         password: hash,
         cart: [],
       });
@@ -43,7 +40,7 @@ exports.postRegister = (req, res) => {
     .then(() => {
       res.redirect('/login');
       return mailer.sendMail({
-        to: rest.email,
+        to: body.email,
         from: 'welcome@mystore.com',
         subject: 'Welcome to My Store',
         html: `<div>

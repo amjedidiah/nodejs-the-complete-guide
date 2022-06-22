@@ -16,12 +16,13 @@ const {
   postNewPassword,
 } = require('../controllers/auth.controller');
 const { isUnAuth, isAuth } = require('../middlewares/auth.middleware');
+const { registerValidator } = require('../validators');
 
 // Routes
 router.get('/login', isUnAuth, getLogin);
 router.post('/login', isUnAuth, postLogin);
 router.get('/register', isUnAuth, getRegister);
-router.post('/register', isUnAuth, postRegister);
+router.post('/register', isUnAuth, registerValidator, postRegister);
 router.post('/logout', isAuth, postLogout);
 router.get('/reset', isUnAuth, getReset);
 router.post('/reset', isUnAuth, postReset);
