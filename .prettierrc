@@ -1,9 +1,9 @@
 {
   "singleQuote": true,
   "semi": true,
-  "printWidth": 80,
+  "printWidth": 99,
   "tabWidth": 2,
-  "trailingComma": "none",
+  "trailingComma": "es5",
   "editorconfig": true,
   "overrides": [
     {

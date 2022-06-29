@@ -130,10 +130,7 @@ exports.postReset = (req, res) => {
 
       return user.save().then(() => {
         const resetLink = `${process.env.FRONTEND_URL}/reset/${token}`;
-        req.flash(
-          'success',
-          'An email has been sent to you with a link to reset your password!',
-        );
+        req.flash('success', 'An email has been sent to you with a link to reset your password!');
         res.redirect('/login');
         mailer.sendMail({
           to: email,

@@ -80,4 +80,8 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 - [ ] [SendGrid Official Docs](https://sendgrid.com/docs/)
 
+- [ ] [Express-Validator Docs](https://express-validator.github.io/docs/)
+
+- [ ] [Validator.js Docs](https://github.com/chriso/validator.js)
+
 ## ToDO

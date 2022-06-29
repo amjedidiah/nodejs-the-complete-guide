@@ -4,11 +4,7 @@ const express = require('express');
 const router = new express.Router();
 
 // Controller imports
-const {
-  postOrder,
-  getOrders,
-  deleteOrder,
-} = require('../controllers/order.controller');
+const { postOrder, getOrders, deleteOrder } = require('../controllers/order.controller');
 const { isAuth } = require('../middlewares/auth.middleware');
 
 // Routes

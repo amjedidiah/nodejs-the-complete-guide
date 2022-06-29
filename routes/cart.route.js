@@ -4,11 +4,7 @@ const express = require('express');
 const router = new express.Router();
 
 // Controller imports
-const {
-  getCart,
-  postCart,
-  postCartDeleteProduct,
-} = require('../controllers/cart.controller');
+const { getCart, postCart, postCartDeleteProduct } = require('../controllers/cart.controller');
 const { isAuth } = require('../middlewares/auth.middleware');
 
 // Routes

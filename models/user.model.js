@@ -40,9 +40,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.methods.addToCart = function (pID) {
-  const itemIndex = this.cart.findIndex(
-    (it) => it.productId.toString() === pID.toString(),
-  );
+  const itemIndex = this.cart.findIndex((it) => it.productId.toString() === pID.toString());
 
   if (itemIndex !== -1) {
     this.cart[itemIndex].quantity += 1;
@@ -61,9 +59,7 @@ UserSchema.methods.getCart = function () {
 };
 
 UserSchema.methods.removeFromCart = function (pID) {
-  const filteredItems = this.cart.filter(
-    (item) => item.productId.toString() !== pID.toString(),
-  );
+  const filteredItems = this.cart.filter((item) => item.productId.toString() !== pID.toString());
   this.cart = filteredItems;
 
   return this.save();

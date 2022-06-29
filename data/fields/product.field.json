@@ -3,19 +3,28 @@
     "type": "text",
     "name": "name",
     "aria-label": "Product Name",
-    "placeholder": "e.g: Quartz Watch"
+    "placeholder": "e.g: Quartz Watch",
+    "required": true
   },
   {
     "type": "number",
     "name": "price",
     "aria-label": "Price",
     "placeholder": "e.g: 250",
-    "min": 0
+    "min": 0,
+    "required": true
   },
   {
     "type": "text",
     "name": "description",
     "aria-label": "Description",
     "placeholder": "e.g: It costs a lot of money"
+  },
+  {
+    "type": "text",
+    "name": "imageURL",
+    "aria-label": "Image URL",
+    "placeholder": "Enter a valid image link ending with .jpg or .png",
+    "required": true
   }
 ]

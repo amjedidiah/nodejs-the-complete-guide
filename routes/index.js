@@ -14,7 +14,8 @@ const orderRoute = require('./order.route');
 const authRoute = require('./auth.route');
 const devLog = require('../util/debug.util');
 
-const notFoundRoute = (req, res) => res.status(404).render('404', { docTitle: 'Not Found', path: '/404' });
+// eslint-disable-next-line max-len
+const notFoundRoute = (_req, res) => res.status(404).render('404', { docTitle: 'Not Found', path: '/404' });
 
 router.use((req, res, next) => {
   if (!req.session?.isLoggedIn) return next();
