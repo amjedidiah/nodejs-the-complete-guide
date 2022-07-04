@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Module imports
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -61,6 +62,12 @@ app.use((req, res, next) => {
 
 // Routes definition
 app.use(routes);
+app.use((error, req, res, next) => {
+  res.status(error.httpStatusCode).render(`error/${error.httpStatusCode}`, {
+    docTitle: 'Internal Server Error',
+    path: '/500',
+  });
+});
 
 // Sync models
 mongoose

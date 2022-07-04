@@ -28,6 +28,28 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 ## Cross-Site Request Forgery (CSRF)
 
+## Error Handling
+
+### Express Error Middleware
+
+- To throw errors in async code: promises and callbacks, use `next(new Error(err))`
+- To throw errors in sync code: use `throw new Error(err)`
+
+### Error Codes
+
+- `200`: OK - Operation succeeded
+- `201`: Created - New resource created
+- `204`: No Content - No content to return
+- `301`: Moved Permanently - Resource moved permanently
+- `302`: Found - Resource found, but redirected
+- `401`: Unauthorized - User is not authorized to access the resource
+- `403`: Forbidden - User is authorized, but does not have the necessary permissions to access the resource
+- `404`: Not Found - Resource not found
+- `405`: Method Not Allowed - Method not allowed for the resource
+- `409`: Conflict - Resource already exists
+- `422`: Unprocessable Entity - Validation error
+- `500`: Internal Server Error - Internal server error
+
 ## Further Reading
 
 - [ ] [Primitive and reference types in JavaScript](https://academind.com/tutorials/reference-vs-primitive-values)
@@ -83,5 +105,9 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 - [ ] [Express-Validator Docs](https://express-validator.github.io/docs/)
 
 - [ ] [Validator.js Docs](https://github.com/chriso/validator.js)
+
+- [ ] [Error Handling in Express.js - Official Docs](https://expressjs.com/en/guide/error-handling.html)
+
+- [ ] [Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
 ## ToDO

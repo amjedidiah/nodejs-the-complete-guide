@@ -15,7 +15,7 @@ const authRoute = require('./auth.route');
 const devLog = require('../util/debug.util');
 
 // eslint-disable-next-line max-len
-const notFoundRoute = (_req, res) => res.status(404).render('404', { docTitle: 'Not Found', path: '/404' });
+const notFoundRoute = (_req, res) => res.status(404).render('error/404', { docTitle: 'Not Found', path: '/404' });
 
 router.use((req, res, next) => {
   if (!req.session?.isLoggedIn) return next();
@@ -25,7 +25,7 @@ router.use((req, res, next) => {
       if (user) req.user = user;
       next();
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 });
 router.use('/cart', cartRoute);
 router.use('/orders', orderRoute);

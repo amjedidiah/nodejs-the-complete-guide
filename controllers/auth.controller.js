@@ -10,7 +10,7 @@ const newPasswordFields = require('../data/fields/new-password.field.json');
 const User = require('../models/user.model');
 const devLog = require('../util/debug.util');
 
-exports.postRegister = (req, res) => {
+exports.postRegister = (req, res, next) => {
   const { body } = req;
 
   const errors = validationResult(req);
@@ -49,10 +49,10 @@ exports.postRegister = (req, res) => {
               </div>`,
       });
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 };
 
-exports.postLogin = (req, res) => {
+exports.postLogin = (req, res, next) => {
   const { body, session } = req;
 
   return User.findOne({ email: body.email })
@@ -79,7 +79,7 @@ exports.postLogin = (req, res) => {
         return res.redirect('/');
       });
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 };
 
 exports.getLogin = (req, res) => res.render('auth/login', {
@@ -112,7 +112,7 @@ exports.getReset = (req, res) => res.render('auth/reset', {
   action: 'Reset',
 });
 
-exports.postReset = (req, res) => {
+exports.postReset = (req, res, next) => {
   const {
     body: { email },
   } = req;
@@ -150,10 +150,10 @@ exports.postReset = (req, res) => {
         });
       });
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 };
 
-exports.getNewPassword = (req, res) => {
+exports.getNewPassword = (req, res, next) => {
   const {
     params: { token },
   } = req;
@@ -178,10 +178,10 @@ exports.getNewPassword = (req, res) => {
         token,
       });
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 };
 
-exports.postNewPassword = (req, res) => {
+exports.postNewPassword = (req, res, next) => {
   const {
     body: {
       password, confirmPassword, token, userId,
@@ -224,5 +224,5 @@ exports.postNewPassword = (req, res) => {
         });
       });
     })
-    .catch((err) => devLog('log', err));
+    .catch((err) => devLog('error', err, next));
 };
