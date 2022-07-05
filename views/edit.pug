@@ -1,10 +1,10 @@
 extends layouts/main.layout.pug
 
 block content
-    div.header__home
-        h1 Edit a #{item}
-    if errorMessage
-        div.error
-            p #{errorMessage}
-    include includes/form.include.pug
-        input(type="hidden" name="id" aria-label="Id" placeholder=item + "ID", value=data._id)
+  div.header__home
+    h1 Edit a #{item}
+  if errorMessage
+    div.error
+      p #{errorMessage}
+  include includes/form.include.pug
+    input(type="hidden" name="id" aria-label="Id" placeholder=item + "ID", value=data._id || data.id)

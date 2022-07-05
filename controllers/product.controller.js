@@ -3,6 +3,7 @@ const Product = require('../models/product.model');
 const User = require('../models/user.model');
 const productFields = require('../data/fields/product.field.json');
 const devLog = require('../util/debug.util');
+const { deleteUploadFromStorage } = require('../util/controller.util');
 
 exports.productAdd = (req, res) => res.render('add', {
   docTitle: 'Add a Product',
@@ -27,7 +28,18 @@ exports.productCreate = (req, res) => {
     });
   }
 
+  if (req.file) bareBody.imageURL = `/${req.file.path}`;
+
   if (bareBody.id) {
+    if (bareBody.imageURL) {
+      Product.findById(bareBody.id)
+        .then((product) => {
+          if (product.imageURL) {
+            deleteUploadFromStorage(product.imageURL);
+          }
+        })
+        .catch((err) => devLog('log', err));
+    }
     return Product.findByIdAndUpdate(bareBody.id, bareBody)
       .then(() => res.redirect('/products'))
       .catch((err) => {
@@ -79,7 +91,7 @@ exports.productGetOne = ({ params: { id }, user: authUser }, res) => Product.fin
     res.redirect('/products');
   });
 
-exports.productEdit = ({ params: { id } }, res) => Product.findById(id)
+exports.productEdit = ({ params: { id } }, res) => (id ? Product.findById(id)
   .then(
     (product) => product
         && res.render('edit', {
@@ -93,10 +105,18 @@ exports.productEdit = ({ params: { id } }, res) => Product.findById(id)
   .catch((err) => {
     devLog('log', err);
     res.redirect('/products');
-  });
+  }) : res.redirect('/products'));
 
-exports.productDeleteOne = ({ params: { id }, user }, res) => Product.findByIdAndDelete(id)
-  .then(() => User.updateOne({ _id: user?._id }, { $pull: { products: id } }))
-  .then(() => User.updateMany({}, { $pull: { cart: { productId: id } } }))
-  .catch((err) => devLog('log', err))
-  .finally(() => res.redirect('/products'));
+exports.productDeleteOne = ({ params: { id }, user }, res) => {
+  let imageURL = '';
+
+  return Product.findByIdAndDelete(id)
+    .then((product) => {
+      imageURL = product.imageURL;
+      return User.updateOne({ _id: user?._id }, { $pull: { products: id } });
+    })
+    .then(() => User.updateMany({}, { $pull: { cart: { productId: id } } }))
+    .then(() => deleteUploadFromStorage(imageURL))
+    .catch((err) => devLog('log', err))
+    .finally(() => res.redirect('/products'));
+};

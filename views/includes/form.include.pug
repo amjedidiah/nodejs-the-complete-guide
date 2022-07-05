@@ -1,4 +1,4 @@
-form(method="POST" action= item ? "/" + item + "s/create" : formAction)
+form(method="POST" action= item ? "/" + item + "s/create" : formAction enctype="multipart/form-data")
     input(type="hidden" name="_csrf" value=csrfToken)
     if token
         input(type="hidden" name="userId" value=userId)

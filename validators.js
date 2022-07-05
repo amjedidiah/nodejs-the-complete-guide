@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 const { body } = require('express-validator');
+const fs = require('fs');
 const Product = require('./models/product.model');
 const User = require('./models/user.model');
 
@@ -41,7 +42,38 @@ const nameValidator = () => body('name', 'Name must be a string between 3 to 70 
   .isLength({ min: 3, max: 70 })
   .trim();
 
-const imageURLValidator = () => body('imageURL', 'Image URL must be a valid URL').isURL();
+const imageNotExistsValidator = () => body('image', 'An image is required').custom(
+  (value, { req }) => req.file && req.file.mimetype.startsWith('image/'),
+);
+
+const imageValidator = () => body('image').custom((value, { req }) => {
+  if (req.file) {
+    if (
+      !req.file.mimetype.endsWith('png')
+        && !req.file.mimetype.endsWith('jpg')
+        && !req.file.mimetype.endsWith('jpeg')
+    ) {
+      throw new Error('Image must be .png or .jpg');
+    }
+    if (!(req.file.size <= 1000000 && req.file.size > 0)) {
+      throw new Error('Image must be less than 1MB');
+    }
+  }
+  return true;
+});
+
+// eslint-disable-next-line no-unused-vars
+const imageExistsValidator = () => body('image', 'This image already exists').custom((value, { req, res, next }) => {
+  if (req.file) {
+    const files = fs.readdirSync('images/uploads');
+    const fileName = req.file.filename;
+    if (files.includes(fileName)) {
+      return Promise.reject(new Error('This image already exists'));
+    }
+    return true;
+  }
+  return true;
+});
 
 const priceValidator = () => body('price', 'Price must be a number greater than 0')
   .isFloat()
@@ -69,13 +101,6 @@ const duplicateNameValidator = (Model, type) => body('name', 'Name already exist
   return true;
 }));
 
-const duplicateImageURLValidator = (Model, type) => body('imageURL', 'ImageURL already exists').custom((value, { req }) => Model.findOne({ imageURL: value, userId: req.user._id }).then((item) => {
-  if (item) {
-    return Promise.reject(new Error(`A ${type} with this imageURL already exists`));
-  }
-  return true;
-}));
-
 const productExistsValidator = () => body('id', 'Product does not exist').custom((value) => Product.findById(value).then((product) => {
   if (!product) {
     return Promise.reject(new Error('Product does not exist'));
@@ -87,14 +112,19 @@ const registerValidator = [emailValidator(true), passwordValidator(), confirmPas
 
 const productAddValidator = [
   nameValidator(),
-  imageURLValidator(),
+  imageNotExistsValidator(),
+  imageValidator(),
+  imageExistsValidator(),
   priceValidator(),
   descriptionValidator(),
   duplicateNameValidator(Product, 'product'),
-  duplicateImageURLValidator(Product, 'product'),
 ];
 
-const productEditValidator = [...productAddValidator.slice(0, 4), productExistsValidator()];
+const productEditValidator = [
+  ...productAddValidator.slice(0, 1),
+  ...productAddValidator.slice(2, 6),
+  productExistsValidator(),
+];
 
 module.exports = {
   registerValidator,

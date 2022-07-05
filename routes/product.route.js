@@ -44,7 +44,6 @@ router.post(
   '/create',
   isAuth,
   ownsProduct,
-
   validate(),
   productCreate,
 );

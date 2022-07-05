@@ -30,6 +30,22 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 ## Error Handling
 
+### Types Of Errors
+
+1. Technical/Network errors
+
+   - e.g: MongoDB server is down
+   - solution: Show error page to user
+
+2. Expected errors
+
+   - e.g: File can't be read, DB operation fails, validation error
+   - solution: Inform user, possibly retry
+
+3. Bugs/logical errors
+   - e.g: User object used when it doesn't exist
+   - solution: Fix during development
+
 ### Express Error Middleware
 
 - To throw errors in async code: promises and callbacks, use `next(new Error(err))`
@@ -110,4 +126,27 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 - [ ] [Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
+- [ ] [Multer Official Docs](https://github.com/expressjs/multer)
+
+- [ ] [Streaming Files](https://medium.freecodecamp.org/node-js-streams-everything-you-need-to-know-c9141306be93)
+
+- [ ] [Generating PDFs with PDFKit](http://pdfkit.org/docs/getting_started.html)
+
 ## ToDO
+
+- [ ] setup multer for multiple images upload using disk storage
+- [ ] setup multer for single image upload using cloudinary storage
+- Print order invoice
+
+  - `getOrder` route with `orderId` param
+  - set headers
+
+    ```js
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="invoice.pdf"');
+    ```
+
+  - let only the owner of the order be able to download the invoice
+  - render file with `fs.createReadStream` and `fs.pipe(res)` instead of `fs.readFile`
+  - Create pdf with `npm i pdfkit`
+  - Delete file using `deleteFile` util function that gets called on delete product and edit product
