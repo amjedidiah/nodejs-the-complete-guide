@@ -8,12 +8,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrfProtection = require('csurf');
 const flash = require('connect-flash');
-const multer = require('multer');
-
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => callback(null, 'images/uploads'),
-  filename: (req, file, callback) => callback(null, `${new Date().toISOString().slice(0, 10)}-${file.originalname}`),
-});
+const multerConfig = require('./config/multer.config');
 
 // Environment variables
 require('dotenv').config();
@@ -38,7 +33,7 @@ app.set('views', 'views');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({ storage }).single('image'));
+app.use(multerConfig);
 app.use(express.static(path.join(rootDIR, 'public')));
 app.use('/images', express.static(path.join(rootDIR, 'images')));
 app.use(

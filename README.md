@@ -136,17 +136,3 @@ Master Node JS & Deno.js, build REST APIs with Node.js, GraphQL APIs, add Authen
 
 - [ ] setup multer for multiple images upload using disk storage
 - [ ] setup multer for single image upload using cloudinary storage
-- Print order invoice
-
-  - `getOrder` route with `orderId` param
-  - set headers
-
-    ```js
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="invoice.pdf"');
-    ```
-
-  - let only the owner of the order be able to download the invoice
-  - render file with `fs.createReadStream` and `fs.pipe(res)` instead of `fs.readFile`
-  - Create pdf with `npm i pdfkit`
-  - Delete file using `deleteFile` util function that gets called on delete product and edit product

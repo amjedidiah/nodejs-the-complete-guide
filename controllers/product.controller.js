@@ -91,21 +91,23 @@ exports.productGetOne = ({ params: { id }, user: authUser }, res) => Product.fin
     res.redirect('/products');
   });
 
-exports.productEdit = ({ params: { id } }, res) => (id ? Product.findById(id)
-  .then(
-    (product) => product
-        && res.render('edit', {
-          docTitle: `Edit ${product.name}`,
-          data: product,
-          fields: productFields,
-          action: 'update',
-          item: 'product',
-        }),
-  )
-  .catch((err) => {
-    devLog('log', err);
-    res.redirect('/products');
-  }) : res.redirect('/products'));
+exports.productEdit = ({ params: { id } }, res) => (id
+  ? Product.findById(id)
+    .then(
+      (product) => product
+            && res.render('edit', {
+              docTitle: `Edit ${product.name}`,
+              data: product,
+              fields: productFields,
+              action: 'update',
+              item: 'product',
+            }),
+    )
+    .catch((err) => {
+      devLog('log', err);
+      res.redirect('/products');
+    })
+  : res.redirect('/products'));
 
 exports.productDeleteOne = ({ params: { id }, user }, res) => {
   let imageURL = '';

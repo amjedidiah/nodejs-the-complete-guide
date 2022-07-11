@@ -19,6 +19,16 @@ const OrderSchema = new Schema(
       ref: 'User',
       required: true,
     },
+    orderNo: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'cancelled', 'completed'],
+      default: 'pending',
+    },
   },
   {
     timestamps: true,

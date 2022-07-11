@@ -1,21 +1,22 @@
 extends layouts/main.layout.pug
 
 block content
-  if orders.length
-    ul
-      each order in orders
-        li
-          p Order ID: #{order._id}
-          p Date: #{order.createdAt}
-          ul
-            each product in order.products
-              li
-                p Name: #{product.name}
-                p Price: #{product.price}
-                p Quantity: #{product.quantity}
-          if isAutheticated
-            form(action="/orders/"+order._id+"/delete" method="post")
-              input(type="hidden" name="_csrf" value=csrfToken)
-              button(type="submit") Delete
-  else 
-    h1 No Orders found
+   if orders.length
+      ul
+         each order in orders
+            li
+               p Order ID: #{order._id}
+               p Date: #{order.createdAt}
+               a(href="/orders/" + order._id, target="_blank") View
+               ul
+                  each product in order.products
+                     li
+                        p Name: #{product.name}
+                        p Price: #{product.price}
+                        p Quantity: #{product.quantity}
+               if isAuthenticated
+                  form(action="/orders/"+order._id+"/delete" method="post")
+                     input(type="hidden" name="_csrf" value=csrfToken)
+                     button(type="submit") Delete
+   else 
+      h1 No Orders found

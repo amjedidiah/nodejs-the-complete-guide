@@ -40,13 +40,7 @@ const validate = () => async (req, res, next) => {
 
 // Routes
 router.get('/add', isAuth, productAdd);
-router.post(
-  '/create',
-  isAuth,
-  ownsProduct,
-  validate(),
-  productCreate,
-);
+router.post('/create', isAuth, ownsProduct, validate(), productCreate);
 router.get('/', productGetAll);
 router.get('/:id', productGetOne);
 router.get('/:id/edit', isAuth, ownsProduct, productEdit);
